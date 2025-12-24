@@ -13,7 +13,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Wpf.Ui.Controls">
 
-    <Thickness x:Key="CardPadding">14,16,14,16</Thickness>
+    <Thickness x:Key="CardPadding">16,20,16,20</Thickness>
     <Thickness x:Key="CardBorderThemeThickness">1</Thickness>
 
     <Style TargetType="{x:Type controls:Card}">
@@ -64,7 +64,7 @@
                             Background="{DynamicResource CardFooterBackground}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
-                            CornerRadius="0,0,4,4"
+                            CornerRadius="0,0,8,8"
                             Visibility="Collapsed">
                             <ContentPresenter x:Name="FooterContentPresenter" Content="{TemplateBinding Footer}" />
                         </Border>
@@ -73,7 +73,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="HasFooter" Value="True">
                             <Setter TargetName="FooterBorder" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="ContentBorder" Property="CornerRadius" Value="4,4,0,0" />
+                            <Setter TargetName="ContentBorder" Property="CornerRadius" Value="8,8,0,0" />
                             <Setter TargetName="ContentBorder" Property="BorderThickness" Value="1,1,1,0" />
                         </Trigger>
                     </ControlTemplate.Triggers>

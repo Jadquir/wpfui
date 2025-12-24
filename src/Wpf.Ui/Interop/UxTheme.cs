@@ -22,7 +22,7 @@ namespace Wpf.Ui.Interop;
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
 #pragma warning disable CA1060 // Move pinvokes to native methods class
 
-internal static class UxTheme
+public static class UxTheme
 {
     /// <summary>
     /// Returned by the GetThemeMargins function to define the margins of windows that have visual styles applied.

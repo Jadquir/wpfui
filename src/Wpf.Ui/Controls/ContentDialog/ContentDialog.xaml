@@ -178,6 +178,13 @@
                         <Trigger Property="IsPrimaryButtonEnabled" Value="False">
                             <Setter TargetName="PrimaryColumn" Property="Width" Value="0" />
                         </Trigger>
+
+                        <!--  Hide Close Button if it's disabled  -->
+                        <Trigger Property="IsCloseButtonEnabled" Value="False">
+                            <Setter TargetName="SecondSpacer" Property="Width" Value="0" />
+                            <Setter TargetName="CloseColumn" Property="Width" Value="0" />
+                        </Trigger>
+
                         <Trigger Property="IsSecondaryButtonEnabled" Value="False">
                             <Setter TargetName="FirstSpacer" Property="Width" Value="0" />
                             <Setter TargetName="SecondaryColumn" Property="Width" Value="0" />
@@ -196,6 +203,10 @@
                         </Trigger>
                         <Trigger Property="SecondaryButtonText" Value="">
                             <Setter Property="IsSecondaryButtonEnabled" Value="False" />
+                        </Trigger>
+                        <!--  Disable Close Button if its text is empty  -->
+                        <Trigger Property="CloseButtonText" Value="">
+                            <Setter Property="IsCloseButtonEnabled" Value="False" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

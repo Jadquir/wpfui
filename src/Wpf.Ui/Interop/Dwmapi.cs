@@ -26,7 +26,7 @@ namespace Wpf.Ui.Interop;
 /// <summary>
 /// Desktop Window Manager (DWM).
 /// </summary>
-internal static class Dwmapi
+public static class Dwmapi
 {
     /// <summary>
     /// Cloaked flags describing why a window is cloaked.

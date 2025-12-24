@@ -124,6 +124,23 @@ public class MessageBox : System.Windows.Window
     );
 
     /// <summary>
+    /// Property for <see cref="IsCloseButtonEnabled"/>.
+    /// </summary>
+    public static readonly DependencyProperty IsCloseButtonEnabledProperty = DependencyProperty.Register(
+        nameof(IsCloseButtonEnabled),
+        typeof(bool),
+        typeof(MessageBox),
+        new PropertyMetadata(true)
+    );
+    /// <summary>
+    /// Gets or sets whether the <see cref="MessageBox"/> close button is enabled.
+    /// </summary>
+    public bool IsCloseButtonEnabled
+    {
+        get => (bool)GetValue(IsCloseButtonEnabledProperty);
+        set => SetValue(IsCloseButtonEnabledProperty, value);
+    }
+    /// <summary>
     /// Gets or sets a value indicating whether to show the <see cref="System.Windows.Window.Title"/> in <see cref="TitleBar"/>.
     /// </summary>
     public bool ShowTitle

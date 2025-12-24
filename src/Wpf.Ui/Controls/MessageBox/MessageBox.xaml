@@ -148,6 +148,20 @@
                                 <Setter TargetName="SecondSpacer" Property="Width" Value="0" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPrimaryButtonEnabled" Value="False" />
+                                <Condition Property="IsCloseButtonEnabled" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter TargetName="FirstSpacer" Property="Width" Value="0" />
+                                <Setter TargetName="SecondSpacer" Property="Width" Value="0" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <Trigger Property="IsCloseButtonEnabled" Value="False">
+                            <Setter TargetName="SecondSpacer" Property="Width" Value="0" />
+                            <Setter TargetName="CloseColumn" Property="Width" Value="0" />
+                        </Trigger>
                         <Trigger Property="IsSecondaryButtonEnabled" Value="False">
                             <Setter TargetName="FirstSpacer" Property="Width" Value="0" />
                             <Setter TargetName="SecondaryColumn" Property="Width" Value="0" />

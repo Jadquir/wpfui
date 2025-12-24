@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using System.Windows.Input;
+using Wpf.Ui.Behaviors;
 
 // ReSharper disable once CheckNamespace
 namespace Wpf.Ui.Controls;
@@ -13,6 +14,13 @@ namespace Wpf.Ui.Controls;
 /// </summary>
 public class DynamicScrollBar : System.Windows.Controls.Primitives.ScrollBar
 {
+    public DynamicScrollBar()
+        : base()
+    {
+        // Enable smooth scrolling by default for this specific control
+        SmoothScrollBehavior.SetIsEnabled(this, true);
+    }
+
     private readonly EventIdentifier _interactiveIdentifier = new();
     private bool _isScrolling = false;
     private bool _isInteracted = false;

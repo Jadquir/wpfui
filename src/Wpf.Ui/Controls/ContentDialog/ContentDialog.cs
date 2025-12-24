@@ -243,6 +243,24 @@ public class ContentDialog : ContentControl
     );
 
     /// <summary>
+    /// Property for <see cref="IsCloseButtonEnabled"/>.
+    /// </summary>
+    public static readonly DependencyProperty IsCloseButtonEnabledProperty = DependencyProperty.Register(
+        nameof(IsCloseButtonEnabled),
+        typeof(bool),
+        typeof(ContentDialog),
+        new PropertyMetadata(true)
+    );
+
+    /// <summary>
+    /// Gets or sets whether the <see cref="ContentDialog"/> close button is enabled.
+    /// </summary>
+    public bool IsCloseButtonEnabled
+    {
+        get => (bool)GetValue(IsCloseButtonEnabledProperty);
+        set => SetValue(IsCloseButtonEnabledProperty, value);
+    }
+    /// <summary>
     /// Gets or sets the title of the <see cref="ContentDialog"/>.
     /// </summary>
     public object? Title

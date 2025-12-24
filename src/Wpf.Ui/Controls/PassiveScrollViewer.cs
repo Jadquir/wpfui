@@ -5,6 +5,7 @@
 
 using System.Windows.Controls;
 using System.Windows.Input;
+using Wpf.Ui.Behaviors;
 
 namespace Wpf.Ui.Controls;
 
@@ -13,6 +14,14 @@ namespace Wpf.Ui.Controls;
 /// </summary>
 public class PassiveScrollViewer : ScrollViewer
 {
+
+    public PassiveScrollViewer()
+        : base()
+    {
+        // Enable smooth scrolling by default for this specific control
+        SmoothScrollBehavior.SetIsEnabled(this, true);
+    }
+
     /// <summary>Identifies the <see cref="IsScrollSpillEnabled"/> dependency property.</summary>
     public static readonly DependencyProperty IsScrollSpillEnabledProperty = DependencyProperty.Register(
         nameof(IsScrollSpillEnabled),

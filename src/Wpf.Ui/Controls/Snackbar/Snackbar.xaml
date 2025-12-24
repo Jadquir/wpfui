@@ -17,10 +17,11 @@
         <Setter Property="BorderBrush" Value="{DynamicResource SnackBarBorderBrush}" />
         <Setter Property="Margin" Value="24" />
         <Setter Property="MinHeight" Value="68" />
+        <Setter Property="MaxWidth" Value="560" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
@@ -28,24 +29,27 @@
                 <ControlTemplate TargetType="{x:Type controls:Snackbar}">
                     <Grid
                         x:Name="CardBorderContainer"
-                        Margin="0,0,0,-200"
-                        Opacity="0">
+                        Opacity="0"
+                        RenderTransformOrigin="0.5,1">
+                        <Grid.RenderTransform>
+                            <TranslateTransform x:Name="ContainerTranslateTransform" Y="10" />
+                        </Grid.RenderTransform>
                         <Border
                             x:Name="CardBorder"
                             MinHeight="{TemplateBinding MinHeight}"
-                            Padding="12"
+                            Padding="14,12"
                             VerticalAlignment="Bottom"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
-                            CornerRadius="4"
+                            CornerRadius="8"
                             RenderTransform="{TemplateBinding SlideTransform}"
                             Visibility="{TemplateBinding Visibility}">
                             <Border.Effect>
                                 <DropShadowEffect
-                                    BlurRadius="30"
+                                    BlurRadius="22"
                                     Direction="0"
-                                    Opacity="0.4"
+                                    Opacity="0.28"
                                     ShadowDepth="0"
                                     Color="#202020" />
                             </Border.Effect>
@@ -108,7 +112,7 @@
                                     x:Name="CloseButton"
                                     Grid.Column="2"
                                     Margin="12,0,0,0"
-                                    Padding="6"
+                                    Padding="8"
                                     Appearance="{TemplateBinding Appearance}"
                                     Command="{Binding Path=TemplateButtonCommand, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                     Foreground="{TemplateBinding Foreground}">
@@ -133,38 +137,52 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimationUsingKeyFrames
-                                            BeginTime="00:00:00"
-                                            Storyboard.TargetName="CardBorderContainer"
-                                            Storyboard.TargetProperty="Margin">
-                                            <SplineThicknessKeyFrame KeyTime="00:00:00" Value="0,0,0,-200" />
-                                            <SplineThicknessKeyFrame KeyTime="00:00:.26" Value="0,0,0,0" />
-                                        </ThicknessAnimationUsingKeyFrames>
                                         <DoubleAnimation
                                             Storyboard.TargetName="CardBorderContainer"
                                             Storyboard.TargetProperty="(Grid.Opacity)"
                                             From="0"
                                             To="1"
-                                            Duration="0:0:.26" />
+                                            Duration="0:0:0.18">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContainerTranslateTransform"
+                                            Storyboard.TargetProperty="Y"
+                                            From="10"
+                                            To="0"
+                                            Duration="0:0:0.18">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimationUsingKeyFrames
-                                            BeginTime="00:00:00"
-                                            Storyboard.TargetName="CardBorderContainer"
-                                            Storyboard.TargetProperty="Margin">
-                                            <SplineThicknessKeyFrame KeyTime="00:00:00" Value="0,0,0,0" />
-                                            <SplineThicknessKeyFrame KeyTime="00:00:.32" Value="0,0,0,-200" />
-                                        </ThicknessAnimationUsingKeyFrames>
                                         <DoubleAnimation
                                             Storyboard.TargetName="CardBorderContainer"
                                             Storyboard.TargetProperty="(Grid.Opacity)"
                                             From="1"
                                             To="0"
-                                            Duration="0:0:.32" />
+                                            Duration="0:0:0.16">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContainerTranslateTransform"
+                                            Storyboard.TargetProperty="Y"
+                                            From="0"
+                                            To="10"
+                                            Duration="0:0:0.16">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>

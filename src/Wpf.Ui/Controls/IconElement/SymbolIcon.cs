@@ -4,6 +4,9 @@
 // All Rights Reserved.
 
 // ReSharper disable once CheckNamespace
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+
 namespace Wpf.Ui.Controls;
 
 /// <summary>
@@ -83,5 +86,48 @@ public class SymbolIcon : FontIcon
         var self = (SymbolIcon)d;
         self.SetFontReference();
         self.OnGlyphChanged();
+    }
+    public ImageSource ToImageSource(int size, Brush backgroundBrush,
+        double fontSize)
+    {
+        return ConvertFontIconToImageSource(this, Foreground, backgroundBrush, fontSize, size, size);
+    }
+    public ImageSource ToImageSource(int width, int height, Brush backgroundBrush,
+        double fontSize)
+    {
+        return ConvertFontIconToImageSource(this, Foreground, backgroundBrush, fontSize, width, height);
+    }
+    public static ImageSource ConvertFontIconToImageSource(FontIcon fontIcon,
+        Brush foregroundBrush,
+        Brush backgroundBrush,
+        double fontSize,
+        double width, double height)
+    {
+        // Create a Canvas to host the FontIcon
+        var canvas = new Canvas();
+        canvas.Width = width;
+        canvas.Height = height;
+
+        canvas.Background = backgroundBrush;
+
+        // Set the foreground color of the FontIcon
+        fontIcon.Foreground = foregroundBrush;
+        fontIcon.VerticalAlignment = VerticalAlignment.Stretch;
+        fontIcon.HorizontalAlignment = HorizontalAlignment.Stretch;
+        // Add the FontIcon to the Canvas
+        canvas.Children.Add(fontIcon);
+        fontIcon.Width = width;
+        fontIcon.Height = height;
+        fontIcon.FontSize = fontSize;
+
+        // Measure and arrange the Canvas to properly position the FontIcon
+        canvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+        canvas.Arrange(new Rect(0, 0, width, height));
+
+        // Render the Canvas to a RenderTargetBitmap
+        var renderTargetBitmap = new RenderTargetBitmap((int)width, (int)height, 96, 96, PixelFormats.Pbgra32);
+        renderTargetBitmap.Render(canvas);
+
+        return renderTargetBitmap;
     }
 }

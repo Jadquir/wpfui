@@ -13,7 +13,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Wpf.Ui.Controls"
     xmlns:converters="clr-namespace:Wpf.Ui.Converters"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <Thickness x:Key="CardExpanderPadding">14,16,14,16</Thickness>
     <Thickness x:Key="CardExpanderBorderThemeThickness">1</Thickness>
@@ -170,7 +170,7 @@
                                 Background="{DynamicResource CardBackground}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="1,0,1,1"
-                                CornerRadius="0,0,4,4"
+                                CornerRadius="0,0,12,12"
                                 Visibility="Collapsed">
                                 <ContentPresenter
                                     x:Name="ContentPresenter"
@@ -197,7 +197,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsExpanded" Value="True">
                             <!--  TODO: Update  -->
-                            <Setter TargetName="ToggleButtonBorder" Property="CornerRadius" Value="4,4,0,0" />
+                            <Setter TargetName="ToggleButtonBorder" Property="CornerRadius" Value="12,12,0,0" />
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
