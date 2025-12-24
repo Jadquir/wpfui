@@ -488,11 +488,16 @@ public class ContentDialog : ContentControl
     {
         SetValue(TemplateButtonCommandProperty, new RelayCommand<ContentDialogButton>(OnButtonClick));
 
-        Loaded += static (sender, _) =>
+        // Avoid registering runtime code that triggers designer behavior or throws exceptions
+        // at design time (to reduce the possibility of designer crashes/rendering failures).
+        if (!Wpf.Ui.Designer.DesignerHelper.IsInDesignMode)
         {
-            var self = (ContentDialog)sender;
-            self.OnLoaded();
-        };
+            Loaded += static (sender, _) =>
+            {
+                var self = (ContentDialog)sender;
+                self.OnLoaded();
+            };
+        }
     }
 
     /// <summary>
@@ -510,11 +515,16 @@ public class ContentDialog : ContentControl
 
         SetValue(TemplateButtonCommandProperty, new RelayCommand<ContentDialogButton>(OnButtonClick));
 
-        Loaded += static (sender, _) =>
+        // Avoid registering runtime code that triggers designer behavior or throws exceptions
+        // at design time (to reduce the possibility of designer crashes/rendering failures).
+        if (!Wpf.Ui.Designer.DesignerHelper.IsInDesignMode)
         {
-            var self = (ContentDialog)sender;
-            self.OnLoaded();
-        };
+            Loaded += static (sender, _) =>
+            {
+                var self = (ContentDialog)sender;
+                self.OnLoaded();
+            };
+        }
     }
 
     /// <summary>
@@ -619,6 +629,12 @@ public class ContentDialog : ContentControl
 
     protected override Size MeasureOverride(Size availableSize)
     {
+        // Avoid throwing exceptions when visual child elements cannot be obtained (designer or template not applied).
+        if (VisualChildrenCount == 0)
+        {
+            return base.MeasureOverride(availableSize);
+        }
+
         var rootElement = (UIElement)GetVisualChild(0)!;
 
         rootElement.Measure(availableSize);
@@ -640,6 +656,7 @@ public class ContentDialog : ContentControl
     /// </summary>
     protected virtual void OnLoaded()
     {
+        // Focus is only needed at runtime.
         _ = Focus();
 
         RaiseEvent(new RoutedEventArgs(OpenedEvent));
