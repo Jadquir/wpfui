@@ -64,9 +64,22 @@ public partial class NavigationView
     private const string TemplateElementAutoSuggestBoxSymbolButton = "PART_AutoSuggestBoxSymbolButton";
 
     /// <summary>
+    /// Template element that hosts <see cref="ExternalContentFrame"/> as a direct visual child.
+    /// </summary>
+    private const string TemplateElementExternalContentHost = "PART_ExternalContentHost";
+
+    /// <summary>
     /// Gets or sets the control responsible for rendering the content.
     /// </summary>
     protected NavigationViewContentPresenter NavigationViewContentPresenter { get; set; } = null!;
+
+    /// <summary>
+    /// Exposes the internal content <see cref="System.Windows.Controls.Frame"/> so callers can
+    /// read <c>ContentFrame.Content</c>, subscribe to <c>Navigating</c>/<c>Navigated</c> events,
+    /// and call <c>ContentFrame.NavigationService.GoBack()</c> — identical to a plain WPF Frame.
+    /// Returns <see langword="null"/> before <see cref="OnApplyTemplate"/> runs.
+    /// </summary>
+    public System.Windows.Controls.Frame? ContentFrame => NavigationViewContentPresenter;
 
     /// <summary>
     /// Gets or sets the control located at the top of the pane with left arrow icon.
@@ -116,6 +129,21 @@ public partial class NavigationView
             System.Windows.Controls.ItemsControl.ItemsSourceProperty,
             FooterMenuItems
         );
+
+        if (GetTemplateChild(TemplateElementExternalContentHost) is System.Windows.Controls.Border externalHost)
+        {
+            if (ExternalContentFrame is { } frame)
+            {
+                externalHost.Child = frame;
+                externalHost.Visibility = Visibility.Visible;
+                NavigationViewContentPresenter.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                externalHost.Visibility = Visibility.Collapsed;
+                NavigationViewContentPresenter.Visibility = Visibility.Visible;
+            }
+        }
 
         if (NavigationViewContentPresenter is not null)
         {

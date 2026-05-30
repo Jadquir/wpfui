@@ -437,12 +437,17 @@
             </Grid>
 
             <Border
+                x:Name="ContentBorder"
                 Grid.Column="1"
                 Margin="{TemplateBinding FrameMargin}"
-                Background="{DynamicResource NavigationViewContentBackground}"
-                BorderBrush="{DynamicResource NavigationViewContentGridBorderBrush}"
                 BorderThickness="1,1,0,0"
-                CornerRadius="8,0,0,0">
+                CornerRadius="14,0,0,0">
+                <Border.Background>
+                    <SolidColorBrush Color="{DynamicResource LayerFillColorDefault}" Opacity=".1"></SolidColorBrush>
+                </Border.Background>
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="{DynamicResource CardStrokeColorDefault}" Opacity=".1"></SolidColorBrush>
+                </Border.BorderBrush> 
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -456,13 +461,19 @@
                         Content="{TemplateBinding Header}"
                         Visibility="{TemplateBinding HeaderVisibility}" />
 
-                    <!--  Page content  -->
+                    <!--  Page content — internal presenter (used when ExternalContentFrame is not set)  -->
                     <controls:NavigationViewContentPresenter
                         x:Name="PART_NavigationViewContentPresenter"
                         Grid.Row="1"
                         Padding="{TemplateBinding Padding}"
                         Transition="{TemplateBinding Transition}"
                         TransitionDuration="{TemplateBinding TransitionDuration}" />
+
+                    <!--  External frame slot — child set programmatically in OnApplyTemplate  -->
+                    <Border
+                        x:Name="PART_ExternalContentHost"
+                        Grid.Row="1"
+                        Visibility="Collapsed" />
 
                     <!--  Overlay (e.g., SnackbarPresenter)  -->
                     <ContentPresenter

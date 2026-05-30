@@ -17,6 +17,27 @@ namespace Wpf.Ui.Controls;
 /// </content>
 public partial class NavigationView
 {
+    /// <summary>Identifies the <see cref="ExternalContentFrame"/> dependency property.</summary>
+    public static readonly DependencyProperty ExternalContentFrameProperty = DependencyProperty.Register(
+        nameof(ExternalContentFrame),
+        typeof(System.Windows.Controls.Frame),
+        typeof(NavigationView),
+        new FrameworkPropertyMetadata(null)
+    );
+
+    /// <summary>
+    /// Gets or sets optional external <see cref="System.Windows.Controls.Frame"/> to display in the
+    /// NavigationView's styled content area instead of the built-in
+    /// <see cref="NavigationViewContentPresenter"/>.
+    /// Declare it as a child of the NavigationView in XAML — identical to how
+    /// <see cref="TitleBar"/> is wired — and the template will host it automatically.
+    /// </summary>
+    public System.Windows.Controls.Frame? ExternalContentFrame
+    {
+        get => (System.Windows.Controls.Frame?)GetValue(ExternalContentFrameProperty);
+        set => SetValue(ExternalContentFrameProperty, value);
+    }
+
     /// <summary>Identifies the <see cref="EnableDebugMessages"/> dependency property.</summary>
     public static readonly DependencyProperty EnableDebugMessagesProperty = DependencyProperty.Register(
         nameof(EnableDebugMessages),

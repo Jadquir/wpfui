@@ -30,9 +30,17 @@ public class IconSourceElement : IconElement
         get => (IconSource?)GetValue(IconSourceProperty);
         set => SetValue(IconSourceProperty, value);
     }
-
+    UIElement? _cachedFallback;
     protected override UIElement InitializeChildren()
     {
+#if DEBUG
+        if (_cachedFallback == null)
+        {
+            _cachedFallback = CreateIconElement() ?? new UIElement();
+        }
+
+        return _cachedFallback;
+#endif
         // TODO: Come up with an elegant solution
         throw new InvalidOperationException($"Use {nameof(CreateIconElement)}");
     }

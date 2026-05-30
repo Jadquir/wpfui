@@ -99,6 +99,16 @@ public class Button : System.Windows.Controls.Button, IAppearanceControl, IIconC
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender
         )
     );
+    /// <summary>Identifies the <see cref="ContentVisibility"/> dependency property.</summary>
+    public static readonly DependencyProperty ContentVisibilityProperty = DependencyProperty.Register(
+        nameof(ContentVisibility),
+        typeof(Visibility),
+        typeof(Button),
+        new FrameworkPropertyMetadata(
+            default(Visibility),
+            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender
+        )
+    );
 
     /// <summary>
     /// Gets or sets displayed <see cref="IconElement"/>.
@@ -182,5 +192,14 @@ public class Button : System.Windows.Controls.Button, IAppearanceControl, IIconC
     {
         get => (CornerRadius)GetValue(CornerRadiusProperty);
         set => SetValue(CornerRadiusProperty, (object)value);
+    }
+
+    /// <summary>
+    /// Gets or sets the visibility of the inner content of the button, which includes the text.
+    /// </summary>
+    public Visibility ContentVisibility
+    {
+        get => (Visibility)GetValue(ContentVisibilityProperty);
+        set => SetValue(ContentVisibilityProperty, (object)value);
     }
 }

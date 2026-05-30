@@ -35,12 +35,31 @@ namespace Wpf.Ui.Behaviors
             if ((bool)e.NewValue)
             {
                 scrollViewer.PreviewMouseWheel += ScrollViewer_PreviewMouseWheel;
+                scrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
                 scrollViewer.SetValue(TargetVerticalOffsetProperty, scrollViewer.VerticalOffset);
                 scrollViewer.SetValue(AnimatedVerticalOffsetProperty, scrollViewer.VerticalOffset);
             }
             else
             {
-                scrollViewer.PreviewMouseWheel -= ScrollViewer_PreviewMouseWheel;
+                scrollViewer.PreviewMouseWheel -= ScrollViewer_PreviewMouseWheel; 
+                scrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+            }
+        }
+
+        private static void ScrollViewer_ScrollChanged(object? sender, ScrollChangedEventArgs e)
+        {
+            if (sender is not ScrollViewer scrollViewer) return;
+
+            // If the vertical offset changed by something OTHER than our animation
+            // (e.g., content size change, window resize, or dragging the scrollbar)
+            double currentAnimated = (double)scrollViewer.GetValue(AnimatedVerticalOffsetProperty);
+
+            // We use a small epsilon to avoid fighting with our own animation precision
+            if (Math.Abs(e.VerticalOffset - currentAnimated) > 1.0)
+            {
+                scrollViewer.BeginAnimation(AnimatedVerticalOffsetProperty, null); // stop animation
+                scrollViewer.SetValue(TargetVerticalOffsetProperty, e.VerticalOffset);
+                scrollViewer.SetValue(AnimatedVerticalOffsetProperty, e.VerticalOffset);
             }
         }
 
@@ -58,7 +77,8 @@ namespace Wpf.Ui.Behaviors
             // Sync check: if user manually scrolled (grabbed scrollbar), reset everything
             if (Math.Abs(actualOffset - currentAnimated) > 5)
             {
-                currentTarget = actualOffset;
+                currentTarget = actualOffset;  // Stop animation first, then set value to prevent revert-to-default
+                scrollViewer.BeginAnimation(AnimatedVerticalOffsetProperty, null);
                 scrollViewer.SetValue(AnimatedVerticalOffsetProperty, actualOffset);
             }
 

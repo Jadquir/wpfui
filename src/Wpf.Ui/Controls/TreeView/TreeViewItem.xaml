@@ -33,7 +33,6 @@
                         <controls:SymbolIcon
                             x:Name="ChevronIcon"
                             VerticalAlignment="Center"
-                            FontSize="{StaticResource TreeViewItemChevronSize}"
                             Symbol="ChevronRight28" />
                     </Grid>
                     <ControlTemplate.Triggers>

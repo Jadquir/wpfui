@@ -7,8 +7,11 @@ using System.Reflection;
 using Wpf.Ui.Input;
 using Wpf.Ui.Interop;
 using Size = System.Windows.Size;
+
 #if NET8_0_OR_GREATER
+
 using System.Runtime.CompilerServices;
+
 #endif
 
 // ReSharper disable once CheckNamespace
@@ -131,23 +134,6 @@ public class MessageBox : System.Windows.Window
         new PropertyMetadata(null)
     );
 
-    /// <summary>
-    /// Property for <see cref="IsCloseButtonEnabled"/>.
-    /// </summary>
-    public static readonly DependencyProperty IsCloseButtonEnabledProperty = DependencyProperty.Register(
-        nameof(IsCloseButtonEnabled),
-        typeof(bool),
-        typeof(MessageBox),
-        new PropertyMetadata(true)
-    );
-    /// <summary>
-    /// Gets or sets whether the <see cref="MessageBox"/> close button is enabled.
-    /// </summary>
-    public bool IsCloseButtonEnabled
-    {
-        get => (bool)GetValue(IsCloseButtonEnabledProperty);
-        set => SetValue(IsCloseButtonEnabledProperty, value);
-    }
     /// <summary>
     /// Gets or sets a value indicating whether to show the <see cref="System.Windows.Window.Title"/> in <see cref="TitleBar"/>.
     /// </summary>
@@ -370,6 +356,7 @@ public class MessageBox : System.Windows.Window
             case WindowStartupLocation.CenterScreen:
                 CenterWindowOnScreen();
                 break;
+
             case WindowStartupLocation.CenterOwner:
                 if (!CanCenterOverWPFOwner() || Owner.WindowState is WindowState.Minimized)
                 {
@@ -381,6 +368,7 @@ public class MessageBox : System.Windows.Window
                 }
 
                 break;
+
             default:
                 throw new InvalidOperationException();
         }
@@ -397,8 +385,10 @@ public class MessageBox : System.Windows.Window
     }
 
 #if NET8_0_OR_GREATER
+
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_CanCenterOverWPFOwner")]
     private static extern bool CanCenterOverWPFOwnerAccessor(Window w);
+
 #endif
 
     /// <summary>

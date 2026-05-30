@@ -167,6 +167,13 @@ public interface INavigationView
     Thickness FrameMargin { get; set; }
 
     /// <summary>
+    /// Gets or sets optional external <see cref="System.Windows.Controls.Frame"/> to host in the styled
+    /// content area instead of the built-in NavigationViewContentPresenter.
+    /// Set in XAML as a child property the same way TitleBar is wired.
+    /// </summary>
+    System.Windows.Controls.Frame? ExternalContentFrame { get; set; }
+
+    /// <summary>
     /// Occurs when the NavigationView pane is opened.
     /// </summary>
     event TypedEventHandler<NavigationView, RoutedEventArgs> PaneOpened;
@@ -205,6 +212,12 @@ public interface INavigationView
     /// Gets a value indicating whether there is at least one entry in back navigation history.
     /// </summary>
     bool CanGoBack { get; }
+
+    /// <summary>
+    /// Navigates the content frame to a page instance directly, bypassing the
+    /// NavigationViewItem type registry. Fires Navigating (cancelable) and Navigated events.
+    /// </summary>
+    bool NavigatePage(UIElement page, object? dataContext = null);
 
     /// <summary>
     /// Synchronously navigates current navigation Frame to the

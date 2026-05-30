@@ -776,4 +776,28 @@ public partial class TitleBar : System.Windows.Controls.Control, IThemeControl
 
         return tElement;
     }
+
+    public void UpdateTitleBarButtons()
+    {
+        foreach (TitleBarButton? button in _buttons)
+        {
+            if (button is null)
+            {
+                continue;
+            }
+
+            button.SetCurrentValue(
+                TitleBarButton.ButtonsForegroundProperty,
+                ButtonsForeground
+            );
+
+            // forces re-evaluation of render brush
+            button.SetCurrentValue(
+                TitleBarButton.RenderButtonsForegroundProperty,
+                button.IsHovered && button.MouseOverButtonsForeground != null
+                    ? button.MouseOverButtonsForeground
+                    : ButtonsForeground
+            );
+        }
+    }
 }

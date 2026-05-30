@@ -132,7 +132,6 @@
                                 RenderOptions.BitmapScalingMode="HighQuality" />
                         </Grid>
 
-
                         <Grid Grid.Column="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -246,5 +245,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>

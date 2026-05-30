@@ -29,16 +29,16 @@
                     <controls:EffectThicknessDecorator Thickness="30">
                         <Border
                             x:Name="Border"
-                            Padding="0,3,0,3"
+                            Padding="0,5,0,5"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
-                            CornerRadius="8">
+                            CornerRadius="15">
                             <Border.Effect>
                                 <DropShadowEffect
                                     BlurRadius="20"
                                     Direction="270"
-                                    Opacity="0.135"
+                                    Opacity="0.335"
                                     ShadowDepth="10"
                                     Color="#202020" />
                             </Border.Effect>
@@ -49,6 +49,8 @@
                                 ClipToBounds="True"
                                 IsItemsHost="True"
                                 KeyboardNavigation.DirectionalNavigation="Cycle"
+                                ScrollViewer.CanContentScroll="True"
+                                CanVerticallyScroll="True"
                                 Orientation="Vertical" />
                         </Border>
                     </controls:EffectThicknessDecorator>

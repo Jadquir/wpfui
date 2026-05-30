@@ -20,7 +20,7 @@ namespace Wpf.Ui.Win32;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 // ReSharper disable once ClassNeverInstantiated.Global
-internal sealed class Utilities
+public sealed class Utilities
 {
     private static readonly PlatformID _osPlatform = Environment.OSVersion.Platform;
 
@@ -33,6 +33,7 @@ internal sealed class Utilities
     private static readonly Version _osVersion =
 #if NET5_0_OR_GREATER
     Environment.OSVersion.Version;
+
 #else
     GetOSVersionFromRegistry();
 #endif

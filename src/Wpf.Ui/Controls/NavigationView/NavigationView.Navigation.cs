@@ -44,6 +44,25 @@ public partial class NavigationView
     /// <inheritdoc />
     public void SetServiceProvider(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
+    /// <summary>
+    /// Navigates the content frame to a page <em>instance</em> directly, bypassing
+    /// the NavigationViewItem type registry. Fires <see cref="Navigating"/> (cancelable)
+    /// and <see cref="Navigated"/> events — identical to the behaviour callers expect
+    /// from <see cref="System.Windows.Controls.Frame.Navigate(object)"/>.
+    /// </summary>
+    /// <param name="page">The page instance to display.</param>
+    /// <param name="dataContext">Optional DataContext to set on the page before display.</param>
+    /// <returns><see langword="true"/> when navigation succeeded; <see langword="false"/> if cancelled.</returns>
+    public virtual bool NavigatePage(UIElement page, object? dataContext = null)
+    {
+        if (OnNavigating(page))
+            return false;
+
+        UpdateContent(page, dataContext);
+        OnNavigated(page);
+        return true;
+    }
+
     /// <inheritdoc />
     public virtual bool Navigate(Type pageType, object? dataContext = null)
     {
@@ -381,9 +400,6 @@ public partial class NavigationView
         }
 
         _ = frame.RemoveBackEntry();
-
-        /*var replaced = 1;
-        ((NavigationViewContentPresenter)sender).JournalOwnership =*/
     }
 
     private void AddToNavigationStack(

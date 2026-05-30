@@ -13,11 +13,15 @@
     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <system:Double x:Key="DefaultIconFontSize">16</system:Double>
+    <system:Double x:Key="TreeViewItemChevronSize">16</system:Double>
 
     <system:Double x:Key="ControlContentThemeFontSize">14</system:Double>
-    <CornerRadius x:Key="ControlCornerRadius">8,8,8,8</CornerRadius>
+    <CornerRadius x:Key="ControlCornerRadius">10,10,10,10</CornerRadius>
+    <CornerRadius x:Key="ExpanderCornerRadius">12</CornerRadius>
     <CornerRadius x:Key="OverlayCornerRadius">8,8,8,8</CornerRadius>
     <CornerRadius x:Key="PopupCornerRadius">12,12,12,12</CornerRadius>
+
+    
 
     <!--
     <system:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</system:String>

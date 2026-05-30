@@ -121,9 +121,18 @@ public static class ApplicationThemeManager
         SystemThemeManager.UpdateSystemThemeCache();
 
         _cachedApplicationTheme = applicationTheme;
+        try
+        {
+            Changed?.Invoke(applicationTheme, ApplicationAccentColorManager.SystemAccent);
+        }
+        catch (Exception ex)
+        {
 
-        Changed?.Invoke(applicationTheme, ApplicationAccentColorManager.SystemAccent);
-
+            System.Diagnostics.Debug.WriteLine(
+                $"ERROR | {typeof(ApplicationThemeManager)} Error Calling Changed: " + ex.Message,
+                nameof(ApplicationThemeManager)
+            );
+        }
         if (UiApplication.Current.MainWindow is Window mainWindow)
         {
             WindowBackgroundManager.UpdateBackground(mainWindow, applicationTheme, backgroundEffect);

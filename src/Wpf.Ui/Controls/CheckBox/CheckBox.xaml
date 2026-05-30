@@ -3,7 +3,7 @@
     If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
     Copyright (C) Leszek Pomianowski and WPF UI Contributors.
     All Rights Reserved.
-    
+
     Based on Microsoft XAML for Win UI
     Copyright (c) Microsoft Corporation. All Rights Reserved.
 -->
@@ -58,7 +58,7 @@
         <Setter Property="Focusable" Value="True" />
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="MinHeight" Value="32" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" /> 
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -91,6 +91,9 @@
                                         Foreground="{DynamicResource CheckBoxCheckGlyphForeground}"
                                         Symbol="Checkmark48"
                                         Visibility="Collapsed">
+                                        <controls:SymbolIcon.RenderTransform>
+                                            <ScaleTransform x:Name="IconScaleTransform" ScaleX="1" ScaleY="1" />
+                                        </controls:SymbolIcon.RenderTransform>
                                         <controls:SymbolIcon.Clip>
                                             <MultiBinding Converter="{StaticResource ClipConverter}">
                                                 <MultiBinding.Bindings>
@@ -162,6 +165,20 @@
                                         </DoubleAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
+                                <BeginStoryboard Name="SlideIn">
+                                    <Storyboard>
+                                        <DoubleAnimation
+            Storyboard.TargetName="ControlIcon"
+            Storyboard.TargetProperty="Tag"
+            From="0"
+            To="1"
+            Duration="{StaticResource CheckBoxAnimationDuration}">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
@@ -197,6 +214,7 @@
                                                 <CubicEase EasingMode="EaseOut" />
                                             </DoubleAnimation.EasingFunction>
                                         </DoubleAnimation>
+
                                         <DoubleAnimation
                                             Storyboard.TargetName="IconScaleTransform"
                                             Storyboard.TargetProperty="ScaleX"
@@ -238,22 +256,7 @@
                             <Setter TargetName="ControlIcon" Property="Visibility" Value="Visible" />
                             <Setter TargetName="ControlBorderIconPresenter" Property="Background" Value="{DynamicResource CheckBoxCheckBackgroundFillChecked}" />
                             <Setter TargetName="StrokeBorder" Property="BorderBrush" Value="{DynamicResource CheckBoxCheckBorderBrush}" />
-                            <Trigger.EnterActions>
-                                <BeginStoryboard Name="SlideIn">
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="ControlIcon"
-                                            Storyboard.TargetProperty="Tag"
-                                            From="0"
-                                            To="1"
-                                            Duration="{StaticResource CheckBoxAnimationDuration}">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut" />
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
+                      
                         </Trigger>
                         <!--  Skip the animation when it becomes visible  -->
                         <Trigger Property="Visibility" Value="Visible">

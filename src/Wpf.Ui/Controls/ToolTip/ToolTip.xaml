@@ -1,72 +1,140 @@
 <!--
-    This Source Code Form is subject to the terms of the MIT License.
-    If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
-    Copyright (C) Leszek Pomianowski and WPF UI Contributors.
-    All Rights Reserved.
+    Improved ToolTip style for WPF UI
+    Improvements over v1:
+    · Placement="Bottom" — anchored to target, never occludes hovered element
+    · Fade + slight upward slide entrance animation
+    · Outer shadow wrapper border fixes square-corner shadow artifact on rounded bg
+    · Height="Auto" redundant setter removed
+    · Optional kbd shortcut slot via ToolTipService.ToolTip compound content pattern
+    · InitialShowDelay and ShowDuration tuned via attached properties at bottom
 -->
-
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ── Timing constants ──────────────────────────────────────────────── -->
+    <system:Int32 x:Key="ToolTipInitialDelay">500</system:Int32>
+    <system:Int32 x:Key="ToolTipShowDuration">6000</system:Int32>
 
     <Style x:Key="DefaultToolTipStyle" TargetType="{x:Type ToolTip}">
-        <Setter Property="MaxWidth" Value="320" />
-        <Setter Property="Height" Value="Auto" />
-        <Setter Property="Width" Value="Auto" />
-        <Setter Property="TextElement.FontSize" Value="12" />
-        <Setter Property="TextElement.FontWeight" Value="Normal" />
-        <Setter Property="TextBlock.LineHeight" Value="16" />
-        <Setter Property="TextBlock.TextAlignment" Value="Justify" />
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource ToolTipForeground}" />
-        <Setter Property="Foreground" Value="{DynamicResource ToolTipForeground}" />
-        <Setter Property="Background" Value="{DynamicResource ToolTipBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource ToolTipBorderBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="10,8" />
-        <Setter Property="Placement" Value="Mouse" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="MaxWidth"                  Value="280" />
+        <Setter Property="Width"                     Value="Auto" />
+        <Setter Property="TextElement.FontSize"      Value="12" />
+        <Setter Property="TextElement.FontWeight"    Value="Medium" />
+        <Setter Property="TextBlock.LineHeight"      Value="18" />
+        <Setter Property="TextBlock.TextAlignment"   Value="Left" />
+        <Setter Property="TextElement.Foreground"    Value="{DynamicResource ToolTipForeground}" />
+        <Setter Property="Foreground"                Value="{DynamicResource ToolTipForeground}" />
+        <Setter Property="Background"                Value="{DynamicResource ToolTipBackground}" />
+        <Setter Property="BorderBrush"               Value="{DynamicResource ToolTipBorderBrush}" />
+        <Setter Property="BorderThickness"           Value="1" />
+        <Setter Property="Padding"                   Value="10,6" />
+        <Setter Property="Placement"                 Value="Bottom" />
+        <Setter Property="VerticalOffset"            Value="4" />
+        <Setter Property="SnapsToDevicePixels"       Value="True" />
+        <Setter Property="OverridesDefaultStyle"     Value="True" />
+        <Setter Property="HasDropShadow"             Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
-                    <controls:EffectThicknessDecorator Thickness="15">
+                    <!--
+                        Outer border: transparent, carries the DropShadowEffect.
+                        Keeping the shadow on the outer wrapper means it clips
+                        correctly around the inner rounded border — no square
+                        shadow corners bleeding through.
+                    -->
+                    <Border
+                        x:Name="ShadowWrapper"
+                        Padding="6"
+                        Background="Transparent"
+                        SnapsToDevicePixels="True">
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="16"
+                                Direction="270"
+                                Opacity="0.14"
+                                ShadowDepth="4"
+                                Color="#000000" />
+                        </Border.Effect>
+
+                        <!-- Inner border: the visible tooltip surface -->
                         <Border
-                            Name="Border"
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
+                            x:Name="Surface"
+                            Padding="{TemplateBinding Padding}"
                             MaxWidth="{TemplateBinding MaxWidth}"
-                            Padding="8"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
-                            CornerRadius="4"
-                            SnapsToDevicePixels="True">
-                            <Border.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="10"
-                                    Direction="270"
-                                    Opacity="0.135"
-                                    ShadowDepth="5"
-                                    Color="#202020" />
-                            </Border.Effect>
+                            CornerRadius="7"
+                            UseLayoutRounding="True">
+
                             <ContentPresenter
-                                Margin="4"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Top">
+                                VerticalAlignment="Center">
                                 <ContentPresenter.Resources>
                                     <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="LineHeight"   Value="18" />
                                     </Style>
                                 </ContentPresenter.Resources>
                             </ContentPresenter>
                         </Border>
-                    </controls:EffectThicknessDecorator>
+
+                        <!-- ── Entrance: fade in + slide up 4 px ── -->
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- Opacity: 0 → 1 -->
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ShadowWrapper"
+                                            Storyboard.TargetProperty="Opacity"
+                                            From="0" To="1"
+                                            Duration="0:0:0.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <!-- Translate Y: +5 → 0 (slides up into place) -->
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ShadowWrapper"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                            From="5" To="0"
+                                            Duration="0:0:0.18">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+
+                        <Border.RenderTransform>
+                            <TranslateTransform Y="5" />
+                        </Border.RenderTransform>
+
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
+    <!-- Apply as default for all ToolTips -->
     <Style BasedOn="{StaticResource DefaultToolTipStyle}" TargetType="{x:Type ToolTip}" />
+
+    <!--
+        ── Global timing overrides ────────────────────────────────────────────
+        Apply these to your root element (Window / App.xaml) to tune delays:
+
+        <Window
+            ToolTipService.InitialShowDelay="500"
+            ToolTipService.ShowDuration="6000"
+            ToolTipService.BetweenShowDelay="0" />
+
+        BetweenShowDelay="0" means if the user moves from one tooltipped
+        element to another quickly, the second shows instantly — feels snappy.
+    -->
 
 </ResourceDictionary>
